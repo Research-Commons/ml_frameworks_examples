@@ -112,8 +112,8 @@ int main(int argc, char *argv[]) {
   // ========================
   // Load Dataset
   // ========================
-  auto [train_data, train_targets] = load_csv("train_processed.csv");
-  auto [test_data, test_targets] = load_csv("test_processed.csv");
+  auto [train_data, train_targets] = load_csv("generated/train_processed.csv");
+  auto [test_data, test_targets] = load_csv("generated/test_processed.csv");
 
   const i64 input_dim = train_data.size(1);
 

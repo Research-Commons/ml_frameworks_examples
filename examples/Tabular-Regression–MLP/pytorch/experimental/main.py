@@ -13,7 +13,7 @@ from torch.utils.data import DataLoader, TensorDataset
 # -------------------------
 # 1. Load dataset
 # -------------------------
-df = pd.read_csv("../../resources/AmesHousing.csv")  # Ames Housing dataset from Kaggle
+df = pd.read_csv("resources/AmesHousing.csv")  # Ames Housing dataset from Kaggle
 
 # -------------------------
 # 2. Split features and target

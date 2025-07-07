@@ -29,3 +29,6 @@ venv/
 ENV/
 VENV/
 .venv/
+
+build/
+*/**/resources/
