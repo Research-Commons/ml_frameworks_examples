@@ -11,6 +11,8 @@ Some interesting use cases and their implementations in the following frameworks
 The source tree follows this structure:
 
 ```text 
+--- assets
+    ...
 --- examples 
     --- example 1 (name) 
         --- framework (name)
@@ -31,7 +33,7 @@ It is highly recommended to use **Docker** to build the required implementation'
 Use the `run-examples.sh` script. Here is an example:
 
 ```bash 
-./build-examples.sh --framework libtorch --usecase 1 --resources examples/Tabular-Regression-MLP/resources/
+./build-examples.sh --framework libtorch --usecase 1 --resources assets/
 ```
 
 This will build the `experimental` version of the image by default and provide information on how to run the image.
