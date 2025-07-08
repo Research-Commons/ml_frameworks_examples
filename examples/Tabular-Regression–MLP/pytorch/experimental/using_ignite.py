@@ -19,9 +19,11 @@ from ignite.handlers import ModelCheckpoint
 # -------------------------
 
 #-- for docker
-#df = pd.read_csv("resources/AmesHousing.csv")
+df = pd.read_csv("resources/AmesHousing.csv") # Ames Housing dataset from Kaggle
 
-df = pd.read_csv("../../../assets/AmesHousing.csv")
+#-- for debug
+#df = pd.read_csv("../../../../assets/AmesHousing.csv") # Ames Housing dataset from Kaggle
+
 X = df.drop("SalePrice", axis=1)
 y = df["SalePrice"]
 

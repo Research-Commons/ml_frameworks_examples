@@ -81,3 +81,18 @@ You're solving a **regression** problem — predicting a **continuous value**: `
 
 - **Why not MAE (Mean Absolute Error)?**  
   MAE treats all errors equally. RMSE is preferred when **larger errors** are more critical — which is the case when mispredicting high-priced houses could have a bigger impact.
+
+
+## Output
+Epoch 0:   Val RMSE = 190,975.06  
+Epoch 10:  Val RMSE = 153,368.25  
+Epoch 20:  Val RMSE = 42,215.84  
+Epoch 30:  Val RMSE = 31,461.06  
+Epoch 40:  Val RMSE = 28,710.35  
+Epoch 50:  Val RMSE = 27,201.25  
+Epoch 60:  Val RMSE = 26,197.74  
+Epoch 70:  Val RMSE = 25,405.48  
+Epoch 80:  Val RMSE = 24,775.47  
+Epoch 90:  Val RMSE = 24,260.08  
+
+Test RMSE: 31,909.95
