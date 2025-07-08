@@ -15,10 +15,10 @@ from torch.utils.data import DataLoader, TensorDataset
 # -------------------------
 
 #-- for docker
-df = pd.read_csv("resources/AmesHousing.csv") # Ames Housing dataset from Kaggle
+#df = pd.read_csv("resources/AmesHousing.csv") # Ames Housing dataset from Kaggle
 
 #-- for debug
-#df = pd.read_csv("../../../../assets/AmesHousing.csv") # Ames Housing dataset from Kaggle
+df = pd.read_csv("../../../../assets/AmesHousing.csv") # Ames Housing dataset from Kaggle
 
 # -------------------------
 # 2. Split features and target
@@ -131,58 +131,93 @@ test_loader = DataLoader(TensorDataset(X_test_tensor, y_test_tensor), batch_size
 # -------------------------
 # 8. Define MLP model
 # -------------------------
+
 class MLP(nn.Module):
     def __init__(self, input_dim):
         super().__init__()
+
+        #-- First fully connected (dense) layer: input → 128 hidden units
         self.fc1 = nn.Linear(input_dim, 128)
+
+        #-- Second fully connected layer: 128 hidden units → 64 hidden units
         self.fc2 = nn.Linear(128, 64)
+
+        #-- Final output layer: 64 hidden units → 1 output (since it's regression)
         self.fc3 = nn.Linear(64, 1)
 
     def forward(self, x):
+        #-- Apply ReLU activation after first layer to introduce non-linearity
         x = torch.relu(self.fc1(x))
+
+        #-- Apply ReLU after second layer
         x = torch.relu(self.fc2(x))
+
+        #-- Final layer without activation (regression: raw output for predicting price)
         return self.fc3(x)
 
 # -------------------------
 # 9. Initialize model
 # -------------------------
+
+#-- Get the number of input features from the training tensor. This becomes the input dimension for the first layer
+#-- of the MLP
 input_dim = X_train_tensor.shape[1]
 model = MLP(input_dim)
+#-- Adam is an adaptive learning rate optimizer, good default for most problems
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+#-- Since this is a regression task (predicting house prices), we use Mean Squared Error (MSE)
 loss_fn = nn.MSELoss()
 
 # -------------------------
 # 10. Training loop
 # -------------------------
+
+#-- sets the initial best RMSE to infinity
 best_val_rmse = float("inf")
 for epoch in range(100):
+    #-- Tells PyTorch we're in training mode (important for dropout, batchnorm etc.
     model.train()
     for xb, yb in train_loader:
+        #--  Forward pass
         pred = model(xb)
+        #-- Computes MSE loss between prediction and actual value
         loss = loss_fn(pred, yb)
+        #-- Clears any previous gradient values before backpropagation
         optimizer.zero_grad()
+        #-- Compute the gradient
         loss.backward()
+        #-- Updates weights using gradients
         optimizer.step()
 
     # Validation
+    #--  Switches to evaluation mode
     model.eval()
+    #-- Disables gradient tracking. Saves memory and computation since we're not updating weights here
     with torch.no_grad():
+        #-- Get predictions for the full validation set
         val_preds = model(X_val_tensor)
+        #-- Compute Root Mean Squared Error between predictions and actual values
         val_rmse = torch.sqrt(loss_fn(val_preds, y_val_tensor))
+        #-- If current RMSE is better than the best one, update the best RMSE and store the model in a file
         if val_rmse < best_val_rmse:
             best_val_rmse = val_rmse
             torch.save(model.state_dict(), "generated/best_mlp_ames.pt")
 
+    #-- Every 10 epochs, prints how well the model is doing
     if epoch % 10 == 0:
         print(f"Epoch {epoch}: Val RMSE = {val_rmse.item():.2f}")
 
 # -------------------------
 # 11. Final Evaluation
 # -------------------------
+
+#-- This is the final evaluation step on the test dataset, using the best model we saved earlier
 model.load_state_dict(torch.load("generated/best_mlp_ames.pt"))
 model.eval()
 with torch.no_grad():
+    #-- Run Inference on Test Data
     test_preds = model(X_test_tensor)
+    #-- Compute RMSE
     test_rmse = torch.sqrt(loss_fn(test_preds, y_test_tensor))
     print(f"Test RMSE: {test_rmse.item():.2f}")
 
