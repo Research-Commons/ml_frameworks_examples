@@ -1,7 +1,10 @@
 FROM gcc:13 AS builder
 
+# --- ENV VARS ---
+ENV LD_LIBRARY_PATH="/app/libtorch/lib:${LD_LIBRARY_PATH}"
+
 RUN apt-get update && \
-    apt-get install -y cmake unzip curl libomp-dev libstdc++6 && \
+    apt-get install -y cmake unzip curl bash libomp-dev libstdc++6 && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -17,7 +20,7 @@ COPY main.cpp /app/main.cpp
 COPY CSVLoader.hpp /app/CSVLoader.hpp
 COPY HighFive.hpp /app/HighFive.hpp
 
-# Build the C++ target (cached if sources unchanged)
+# --- Stage 2: Build the C++ target (cached if sources unchanged) ---
 RUN cmake -S . -B build -DCMAKE_PREFIX_PATH=/app/libtorch
 RUN cmake --build build -j 8
 
@@ -32,7 +35,7 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-# Copy prebuilt binary and libtorch
+# --- Stage 3: Image setup ---
 COPY --from=builder /app/build/example1-libtorch-experimental /app/
 COPY --from=builder /app/libtorch /app/libtorch
 
@@ -40,10 +43,7 @@ COPY --from=builder /app/libtorch /app/libtorch
 COPY dataset.py /app/dataset.py
 COPY resources/AmesHousing.csv /app/resources/
 
-ENV LD_LIBRARY_PATH="/app/libtorch/lib:${LD_LIBRARY_PATH}"
-
 RUN pip install --no-cache-dir pandas numpy scikit-learn
 RUN python dataset.py
 
-ENTRYPOINT ["./example1-libtorch-experimental"]
-CMD []
+CMD ["bash"]

@@ -30,7 +30,7 @@ Each framework's implementation (`base` or `experimental`) will have their own `
 
 It is highly recommended to use **Docker** to build the required implementation's image for convenience and dependencies free experience.
 
-Use the `run-examples.sh` script. Here is an example:
+Use the `build-examples.sh` script. Here is an example:
 
 ```bash 
 ./build-examples.sh --framework libtorch --usecase 1 --resources assets/
@@ -38,6 +38,11 @@ Use the `run-examples.sh` script. Here is an example:
 
 This will build the `experimental` version of the image by default and provide information on how to run the image.
 
-### Native builds 
-
-Coming soon.
+> [!NOTE]
+> 
+> Docker containers are expected to run with these certain specifications:
+> 
+> ```bash 
+> docker run --cpus="2.0" --memory="4g" --memory-swap="4g" -it <container-id>
+> ```
+> 

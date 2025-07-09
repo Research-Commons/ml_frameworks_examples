@@ -118,4 +118,4 @@ echo -e "${GREEN}[*] Usecase:      ${USECASE_NAME}${RESET}"
 echo -e "${GREEN}[*] Framework:    ${FRAMEWORK}${RESET}"
 
 echo -e "\n${YELLOW}👉 To run the container:${RESET}"
-echo -e "${BLUE}   docker run ${IMAGE_TAG} <cmd-line-args>${RESET}\n"
+echo -e "${BLUE}   docker run --cpus=\"2\" --memory=\"4g\" --memory-swap=\"4g\" -it ${IMAGE_TAG} <cmd-line-args>${RESET}\n"
