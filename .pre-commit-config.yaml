@@ -1,0 +1,10 @@
+repos:
+  - repo: local
+    hooks:
+      - id: docker-build-all
+        name: Build all Docker images
+        entry: bash scripts/build-examples-all.sh
+        language: system
+        types: [file]
+        pass_filenames: false
+        always_run: true
