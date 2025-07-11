@@ -8,13 +8,13 @@ This project demonstrates how to use XGBoost to predict survival on the Titanic 
 
 We implement the same task using:
 
-1. `using-sklearn.py` – High-level API (`XGBClassifier`)
+1. `using-xgboost-directly.py` – High-level API (`XGBClassifier`)
 2. `using-DMatrix-API.py` – Low-level XGBoost API with `xgb.train()`
 3. `using-xgboost-pytorch-data-pipeline.py` – Integration with PyTorch data pipelines
 
 ---
 
-## 1. `using-sklearn.py`
+## 1. `using-xgboost-directly.py`
 
 **Approach**: **High-level Scikit-learn API (`XGBClassifier`)**
 
@@ -70,7 +70,7 @@ from torch.utils.data import DataLoader, TensorDataset
 
 ## Comparison Table
 
-| Feature                           | `using-sklearn.py` | `using-DMatrix-API.py` | `using-xgboost-pytorch-data-pipeline.py` |
+| Feature                           | `using-xgboost-directly.py` | `using-DMatrix-API.py` | `using-xgboost-pytorch-data-pipeline.py` |
 |----------------------------------|---------------------|-------------------------|-------------------------------------------|
 | Uses `XGBClassifier`             | ✅ Yes              | ❌ No                  | ⚠️ Possibly internally                     |
 | Uses `xgb.train` + `DMatrix`     | ❌ No               | ✅ Yes                 | ✅ Likely                                  |
@@ -81,6 +81,6 @@ from torch.utils.data import DataLoader, TensorDataset
 ---
 
 Each method serves a purpose depending on your goals:  
-- Use `sklearn` API for speed and simplicity.  
+- Use `xgboost-direct` API for speed and simplicity.  
 - Use `DMatrix` API for fine-tuned control.  
 - Use PyTorch pipeline for deep integration with neural networks or hybrid models.
