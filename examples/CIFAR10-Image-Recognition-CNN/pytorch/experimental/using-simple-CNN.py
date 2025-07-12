@@ -46,6 +46,7 @@ class SimpleCNN(nn.Module):
 
 # 4. Instantiate model, loss, optimizer
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(f"Using device: {device}")
 model = SimpleCNN().to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
