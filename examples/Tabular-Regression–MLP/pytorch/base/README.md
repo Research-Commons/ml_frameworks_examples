@@ -82,6 +82,17 @@ You're solving a **regression** problem — predicting a **continuous value**: `
 - **Why not MAE (Mean Absolute Error)?**  
   MAE treats all errors equally. RMSE is preferred when **larger errors** are more critical — which is the case when mispredicting high-priced houses could have a bigger impact.
 
+## Why is **PyTorch** a good fit for this use case?
+
+You're building a simple MLP model on **tabular data** (structured rows and columns) to predict a **continuous value** (house price). PyTorch is especially beneficial here because:
+
+- **Seamless integration with NumPy and pandas** — Makes it easy to load, preprocess, and batch structured datasets.
+- **Simple MLP construction using `nn.Module`** — Building custom feedforward networks is clean and intuitive.
+- **Fast prototyping with dynamic computation graph** — You can change your architecture or loss on the fly without rewriting boilerplate.
+- **Powerful GPU support** — Easy to switch between CPU and GPU during training with `.to(device)`.
+- **Readable training loops** — You have full control over each training step, useful for debugging or experimenting with custom logic.
+
+In short, PyTorch gives you just the right balance of **low-level flexibility** and **high-level convenience** for experimenting with neural networks on tabular regression tasks.
 
 ## Output
 Epoch 0:   Val RMSE = 190,975.06  
