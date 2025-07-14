@@ -16,9 +16,10 @@ from torch.utils.data import DataLoader, TensorDataset
 
 
 #-- for docker
-#df = pd.read_csv("resources/AmesHousing.csv")
+df = pd.read_csv("resources/AmesHousing.csv")
 
-df = pd.read_csv("../../../../assets/AmesHousing.csv") # Ames Housing dataset from Kaggle
+#-- for debugging
+#df = pd.read_csv("../../../../assets/AmesHousing.csv") # Ames Housing dataset from Kaggle
 
 # -------------------------
 # 2. Split features and target

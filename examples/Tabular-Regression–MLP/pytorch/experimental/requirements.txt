@@ -1,0 +1,13 @@
+# Core dependencies
+pandas>=1.5.0
+numpy>=1.22.0
+scikit-learn>=1.1.0
+
+# PyTorch core
+torch>=2.0.0
+
+# PyTorch Ignite for training engine
+pytorch-ignite>=0.4.12
+
+# PyTorch Lightning (modern trainer abstraction)
+lightning>=2.0.0
