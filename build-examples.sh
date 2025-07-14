@@ -25,6 +25,7 @@ echo -e "${RESET}"
 # ------------------------
 declare -A USECASE_MAP=(
   [1]="Tabular-Regression–MLP"
+  [2]="Titanic-Survival-Prediction-XGBoost"
 )
 
 # ------------------------
