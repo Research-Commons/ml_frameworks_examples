@@ -33,7 +33,7 @@ It is highly recommended to use **Docker** to build the required implementation'
 Use the `build-examples.sh` script. Here is an example:
 
 ```bash 
-./build-examples.sh --framework libtorch --usecase 1 --resources assets/
+./build-examples.sh --framework libtorch --usecase 1 --copy-resources assets/
 ```
 
 This will build the `experimental` version of the image by default and provide information on how to run the image.
