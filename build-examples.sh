@@ -32,7 +32,7 @@ declare -A USECASE_MAP=(
 # Help Message
 # ------------------------
 usage() {
-  echo -e "${YELLOW}Usage:${RESET} $0 --framework <libtorch|pytorch> --usecase <number> [--rebuild] [--copy-resources <path>]"
+  echo -e "${YELLOW}Usage:${RESET} $0 --framework <libtorch|pytorch> --usecase <number> [--rebuild] [--copy-resources <path>] [--dir <base|exp>]"
   echo -e "\n${YELLOW}Available Usecases:${RESET}"
   for key in "${!USECASE_MAP[@]}"; do
     echo "  $key => ${USECASE_MAP[$key]}"
@@ -47,11 +47,20 @@ FRAMEWORK=""
 USECASE_ID=""
 REBUILD=false
 RESOURCE_PATH=""
+DIR_MODE="exp"  # default directory is 'experimental'
 
 while [[ "$#" -gt 0 ]]; do
   case $1 in
     --framework) FRAMEWORK="$2"; shift ;;
     --usecase)   USECASE_ID="$2"; shift ;;
+    --dir)
+      if [[ "$2" != "base" && "$2" != "exp" ]]; then
+        echo -e "${RED}[!] Invalid value for --dir: '$2'. Use 'base' or 'exp'.${RESET}"
+        usage
+      fi
+      DIR_MODE="$2"
+      shift
+      ;;
     --rebuild)   REBUILD=true ;;
     --copy-resources) RESOURCE_PATH="$2"; shift ;;
     *) echo -e "${RED}Unknown option: $1${RESET}"; usage ;;
@@ -74,7 +83,7 @@ if [[ -z "$USECASE_NAME" ]]; then
   usage
 fi
 
-EXAMPLE_DIR="examples/$USECASE_NAME/$FRAMEWORK/experimental"
+EXAMPLE_DIR="examples/$USECASE_NAME/$FRAMEWORK/$DIR_MODE"
 IMAGE_TAG="${FRAMEWORK}-$(echo "$USECASE_NAME" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]-')"
 DOCKERFILE="$EXAMPLE_DIR/Dockerfile"
 
