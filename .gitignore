@@ -4,6 +4,9 @@
 *.iws
 *.ipr
 
+# For VSCode
+.vscode/
+
 # CLion cmake-specific
 cmake-build-*/
 cmake-build-debug/
