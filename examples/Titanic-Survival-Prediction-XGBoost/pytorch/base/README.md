@@ -13,6 +13,10 @@ This is a **binary classification** problem (output is either 0 or 1), and the g
 
 This implementation uses **XGBoost** (Extreme Gradient Boosting) – a powerful and scalable tree-based model – to train on the dataset and predict survival.
 
+
+> **Note** : Xgboost has an internal tensor like format called DMatrix, and has its own ways to use gradients. Hence, 
+> this use case **does not require pytorch** to work.
+
 ### **Pandas (`pd`)**
 
 > **Handles tabular data loading & manipulation**
