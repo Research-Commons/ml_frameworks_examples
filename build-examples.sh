@@ -26,6 +26,7 @@ echo -e "${RESET}"
 declare -A USECASE_MAP=(
   [1]="Tabular-Regression–MLP"
   [2]="Titanic-Survival-Prediction-XGBoost"
+  [3]="CIFAR10-Image-Recognition-CNN"
 )
 
 # ------------------------
@@ -46,22 +47,24 @@ usage() {
 FRAMEWORK=""
 USECASE_ID=""
 REBUILD=false
+NO_CACHE=false
 RESOURCE_PATH=""
-DIR_MODE="exp"  # default directory is 'experimental'
+DIR_MODE="experimental"  # default directory is 'experimental'
 
 while [[ "$#" -gt 0 ]]; do
   case $1 in
     --framework) FRAMEWORK="$2"; shift ;;
     --usecase)   USECASE_ID="$2"; shift ;;
     --dir)
-      if [[ "$2" != "base" && "$2" != "exp" ]]; then
-        echo -e "${RED}[!] Invalid value for --dir: '$2'. Use 'base' or 'exp'.${RESET}"
+      if [[ "$2" != "base" && "$2" != "experimental" ]]; then
+        echo -e "${RED}[!] Invalid value for --dir: '$2'. Use 'base' or 'experimental'.${RESET}"
         usage
       fi
       DIR_MODE="$2"
       shift
       ;;
     --rebuild)   REBUILD=true ;;
+    --no-cache)  NO_CACHE=true ;;
     --copy-resources) RESOURCE_PATH="$2"; shift ;;
     *) echo -e "${RED}Unknown option: $1${RESET}"; usage ;;
   esac
@@ -110,8 +113,13 @@ fi
 # Build Docker Image
 # ------------------------
 if $REBUILD || [[ "$(docker images -q $IMAGE_TAG 2> /dev/null)" == "" ]]; then
-  echo -e "${GREEN}[*] Building Docker image: ${IMAGE_TAG}${RESET}"
-  docker build -t "$IMAGE_TAG" "$EXAMPLE_DIR"
+  if $NO_CACHE; then
+    echo -e "${GREEN}[*] Building Docker image without caching: ${IMAGE_TAG}${RESET}"
+    docker build --no-cache -t "$IMAGE_TAG" "$EXAMPLE_DIR"
+  else
+    echo -e "${GREEN}[*] Building Docker image: ${IMAGE_TAG}${RESET}"
+    docker build -t "$IMAGE_TAG" "$EXAMPLE_DIR"
+  fi
 else
   echo -e "${YELLOW}[!] Skipping build: image already exists. Use --rebuild to force rebuild.${RESET}"
 fi
