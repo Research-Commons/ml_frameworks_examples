@@ -20,10 +20,10 @@ transform_test = transforms.Compose([
 ])
 
 # 2. Load CIFAR-10 dataset
-trainset = torchvision.datasets.CIFAR10(root='./generated/cnn', train=True, download=True, transform=transform_train)
+trainset = torchvision.datasets.CIFAR10(root='./generated', train=True, download=True, transform=transform_train)
 trainloader = DataLoader(trainset, batch_size=64, shuffle=True, num_workers=2)
 
-testset = torchvision.datasets.CIFAR10(root='./generated/cnn', train=False, download=True, transform=transform_test)
+testset = torchvision.datasets.CIFAR10(root='./generated', train=False, download=True, transform=transform_test)
 testloader = DataLoader(testset, batch_size=100, shuffle=False, num_workers=2)
 
 # 3. Define CNN model
