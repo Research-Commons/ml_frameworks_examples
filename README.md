@@ -36,6 +36,8 @@ Use the `build-examples.sh` script. Here is an example:
 ./build-examples.sh --framework libtorch --usecase 1 --copy-resources assets/
 ```
 
+>Optional : add **"--no-cache"** if you want to build the docker image without caching
+
 This will build the `experimental` version of the image by default and provide information on how to run the image.
 
 > [!NOTE]
