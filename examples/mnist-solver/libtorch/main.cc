@@ -91,13 +91,12 @@ TORCH_MODULE(Net);
 
 int main(int argc, char **argv) {
   const int64_t batch_size = (argc > 1) ? std::stoll(argv[1]) : 64;
-  const int warmup_batches = 10;
   const int profile_batches = 100;
 
   torch::Device device = torch::kCPU;
   std::cout << "Device: " << "CPU" << "\n";
-  std::cout << "Batch size: " << batch_size << ", warmup: " << warmup_batches
-            << ", measure: " << profile_batches << " batches\n";
+  std::cout << "Batch size: " << batch_size << ", measure: " << profile_batches
+            << " batches\n";
 
   Net net;
   net->to(device);
@@ -111,13 +110,6 @@ int main(int argc, char **argv) {
         {bs, 1, 28, 28},
         torch::TensorOptions().device(device).dtype(torch::kFloat32));
   };
-
-  // Warm-up
-  for (int i = 0; i < warmup_batches; ++i) {
-    auto x = make_input(batch_size);
-    auto y = net->forward(x);
-    (void)y;
-  }
 
   // Measure
   std::vector<double> times_ms;
