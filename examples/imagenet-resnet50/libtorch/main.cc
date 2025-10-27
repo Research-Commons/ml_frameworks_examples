@@ -2,6 +2,20 @@
 #include <iostream>
 #include <torch/torch.h>
 
+static std::string with_commas(int64_t x) {
+  std::string s = std::to_string(x), out;
+  int n = s.size(), cnt = 0;
+  for (int i = n - 1; i >= 0; --i) {
+    out.push_back(s[i]);
+    if (++cnt == 3 && i != 0) {
+      out.push_back(',');
+      cnt = 0;
+    }
+  }
+  std::reverse(out.begin(), out.end());
+  return out;
+}
+
 // ---------- BasicBlock ----------
 struct BasicBlockImpl : torch::nn::Module {
   static constexpr int expansion = 1;
@@ -228,7 +242,6 @@ int main(int argc, char **argv) {
     auto x = make_input(batch_size);
     auto t0 = std::chrono::high_resolution_clock::now();
     auto y = model->forward(x);
-    (void)y;
     auto t1 = std::chrono::high_resolution_clock::now();
     double dt = std::chrono::duration<double, std::milli>(t1 - t0).count();
     times_ms.push_back(dt);
@@ -261,5 +274,17 @@ int main(int argc, char **argv) {
             << "  (" << throughput_ips << " images/s)\n";
   std::cout << "Total wall time (measured loop): " << total_ms << " ms\n";
   std::cout << "===========================================\n";
+
+  // ---- parameter counts ----
+  int64_t total_params = 0;
+  int64_t trainable_params = 0;
+  for (const auto &p : model->parameters(/*recurse=*/true)) {
+    total_params += p.numel();
+    if (p.requires_grad())
+      trainable_params += p.numel();
+  }
+  std::cout << "Total parameters:    " << with_commas(total_params) << "\n";
+  std::cout << "Trainable parameters:" << with_commas(trainable_params) << "\n";
+
   return 0;
 }
