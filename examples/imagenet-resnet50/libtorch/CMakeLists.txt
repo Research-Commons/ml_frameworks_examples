@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
-project(example_libtorch_mnist_solver)
+project(example_libtorch_image_resnet_solver)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
