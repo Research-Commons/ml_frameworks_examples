@@ -91,7 +91,7 @@ TORCH_MODULE(Net);
 
 int main(int argc, char **argv) {
   const int64_t batch_size = (argc > 1) ? std::stoll(argv[1]) : 64;
-  const int profile_batches = 100;
+  const int profile_batches = (argc > 2) ? std::stoll(argv[2]) : 1000;
 
   torch::Device device = torch::kCPU;
   std::cout << "Device: " << "CPU" << "\n";
